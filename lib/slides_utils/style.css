@@ -1,0 +1,714 @@
+/* Based on White theme for reveal.js By Hakim El Hattab, http://hakim.se */
+@import url('https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap&text=%E2%86%92%E2%9E%A4%E2%9E%9C%E2%9E%B1%E2%9E%A8%E2%9E%BD%E2%9E%99%E2%9E%AB');
+
+
+
+/* Global variables */
+/* ================ */
+:root {
+  /* size */
+  /* ---- */
+  --r-slide-height: 1080px;
+  --r-slide-width: 1920px;
+  /* --r-slide-width: 1440px; */
+
+  --r-line-height: calc(0.08 * var(--r-slide-height));
+
+  --lh1: var(--r-line-height);
+  --lh2: calc(2 * var(--r-line-height));
+  --lh3: calc(3 * var(--r-line-height));
+  --lh4: calc(4 * var(--r-line-height));
+  --lh5: calc(5 * var(--r-line-height));
+  --lh6: calc(6 * var(--r-line-height));
+  --lh7: calc(7 * var(--r-line-height));
+  --lh8: calc(8 * var(--r-line-height));
+  --lh9: calc(9 * var(--r-line-height));
+  --lh10: calc(10 * var(--r-line-height));
+  --lh11: calc(11 * var(--r-line-height));
+  --lh12: calc(12 * var(--r-line-height));
+
+  --r-base-font: Patrick Hand, sans-serif;
+  --r-base-font-size: calc(0.9 * var(--lh1));
+  --r-base-font-weight: 400;
+  --r-base-offset: 0.25em;
+  --r-base-font-size: calc(0.9 * var(--lh1));
+  --r-math-offset: 0.5em;
+
+  /* colors */
+  /* ------ */
+  /* Color palette from: https://coolors.co/001219-005f73-0a9396-94d2bd-e9d8a6-ee9b00-ca6702-bb3e03-ae2012-9b2226 */
+  --r-base-color: #222222;
+  --r-link-color:#005f73;
+  --r-heading-color:#005f73;
+  --r-highlight-color: #ca6702;
+  --r-shadow-color: #888888;
+  /* --r-selection-color: #ffffff; */
+  --r-selection-background-color: #94d2bd;
+  --r-background-color1: #ffffff;
+  --r-background-color2: #ffffff55;
+  --r-background-color3: #dddddd55;
+  --r-background-lines-color: #216cce18;
+
+  --r-highlight-color-compact: #666666;
+
+  /* Tableau10-Classic colors. From: https://jrnold.github.io/ggthemes/reference/tableau_color_pal.html */
+  --r-palette-color1: #1f77b4;
+  --r-palette-color2: #ff7f0e;
+  --r-palette-color3: #2ca02c;
+  --r-palette-color4: #d62728;
+  --r-palette-color5: #9467bd;
+  --r-palette-color6: #8c564b;
+  --r-palette-color7: #cfecf9;
+  --r-palette-color8: #7f7f7f;
+  --r-palette-color9: #bcbd22;
+  --r-palette-color10: #17becf;
+
+  --r-palette-color1-medium: #729ece;
+  --r-palette-color2-medium: #ff9e4a;
+  --r-palette-color3-medium: #67bf5c;
+  --r-palette-color4-medium: #ed665d;
+  --r-palette-color5-medium: #ad8bc9;
+  --r-palette-color6-medium: #a8786e;
+  --r-palette-color7-medium: #ed97ca;
+  --r-palette-color8-medium: #a2a2a2;
+  --r-palette-color9-medium: #cdcc5d;
+  --r-palette-color10-medium: #6dccda;
+
+  --r-palette-color1-light: #aec7e8;
+  --r-palette-color2-light: #ffbb78;
+  --r-palette-color3-light: #98df8a;
+  --r-palette-color4-light: #ff9896;
+  --r-palette-color5-light: #c5b0d5;
+  --r-palette-color6-light: #c49c94;
+  --r-palette-color7-light: #f7b6d2;
+  --r-palette-color8-light: #c7c7c7;
+  --r-palette-color9-light: #dbdb8d;
+  --r-palette-color10-light: #9edae5;
+
+  --rich-black-fogra-29: #001219ff;
+  --blue-sapphire: #005f73ff;
+  --viridian-green: #0a9396ff;
+  --middle-blue-green: #94d2bdff;
+  --medium-champagne: #e9d8a6ff;
+  --gamboge: #ee9b00ff;
+  --alloy-orange: #ca6702ff;
+  --mahogany: #bb3e03ff;
+  --rufous: #ae2012ff;
+  --ruby-red: #9b2226ff;
+
+  /* styles */
+  /* ------ */
+  --r-heading1-font: Caveat, sans-serif;
+  --r-heading1-style: initial;
+  --r-heading1-size: 2em;
+  --r-heading1-height: var(--lh2);
+  --r-heading1-offset: 0.23em;
+  --r-heading1-weight: 700;
+  --r-heading1-color: var(--r-heading-color);
+  --r-heading1-shadow: -4px 4px 4px var(--r-shadow-color);
+  --r-heading1-decoration: inherit;
+  --r-heading1-filter: inherit;
+
+  --r-heading2-font: inherit;
+  --r-heading2-style: inherit;
+  --r-heading2-size: 1.8em;
+  --r-heading2-height: var(--lh2);
+  --r-heading2-offset: 0.23em;
+  --r-heading2-weight: 500;
+  --r-heading2-color: var(--r-heading-color);
+  --r-heading2-shadow: -4px 4px 4px var(--r-shadow-color);
+  --r-heading2-decoration: inherit;
+  --r-heading2-filter: inherit;
+
+  --r-heading3-font: inherit;
+  --r-heading3-style: inherit;
+  --r-heading3-size: 1.5em;
+  --r-heading3-height: inherit;
+  --r-heading3-offset: 0em;
+  --r-heading3-weight: 500;
+  --r-heading3-color: var(--r-heading-color);
+  --r-heading3-shadow: inherit;
+  --r-heading3-decoration: underline;
+  --r-heading3-filter: drop-shadow(-3px 3px 3px var(--r-shadow-color));
+
+  --r-heading4-font: inherit;
+  --r-heading4-style: inherit;
+  --r-heading4-size: inherit;
+  --r-heading4-height: inherit;
+  --r-heading4-offset: var(--r-base-offset);
+  --r-heading4-weight: 500;
+  --r-heading4-color: var(--r-heading-color);
+  --r-heading4-shadow: inherit;
+  --r-heading4-decoration: underline;
+  --r-heading4-filter: inherit;
+
+  --r-fancy-font: Caveat, sans-serif;
+  --r-fancy-style: initial;
+  --r-fancy-size: inherit;
+  --r-fancy-height: inherit;
+  --r-fancy-offset: inherit;
+  --r-fancy-weight: 600;
+  --r-fancy-color: inherit;
+  --r-fancy-shadow: inherit;
+  --r-fancy-decoration: inherit;
+  --r-fancy-filter: inherit;
+
+  /* --r-code-font: monospace; */
+  /* --r-link-color-dark: #1a53a1; */
+  /* --r-link-color-hover: #6ca0e8; */
+}
+
+/* Sizes */
+/* ===== */
+.reveal .slides {
+  line-height: var(--r-line-height);
+  font-family: var(--r-base-font);
+  font-size: var(--r-base-font-size);
+  font-weight: var(--r-base-font-weight);;
+  text-align: justify;
+  font-style: italic;
+}
+
+.reveal section {
+  width: var(--r-slide-width);
+  height: var(--r-slide-height);
+}
+
+/* Templates */
+/* ========= */
+/* Background */
+/* ========== */
+body:not(.compact) {
+  background: var(--r-background-color1);
+  background-image:
+    radial-gradient(var(--r-background-color2), var(--r-background-color3)),
+    url(media/paper_background.png);
+  background-repeat:
+   no-repeat,
+   repeat;
+  z-index: -2;
+}
+
+/* Background lines */
+/* ---------------- */
+body:not(.compact) .reveal section:not(.no-lines)::before {
+  content: "";
+  position: absolute;
+  width: calc(5 * var(--r-slide-width));
+  height: calc(5 * var(--r-slide-height));
+  margin-left: calc(-2 * var(--r-slide-width));
+  margin-right: calc(-2 * var(--r-slide-width));
+  margin-top: calc(-2 * var(--r-slide-height));
+  margin-bottom: calc(-2 * var(--r-slide-height));
+  background-repeat: repeat;
+  background-image:
+    linear-gradient(var(--r-background-lines-color) 0.03em, transparent 0.03em);
+    /* linear-gradient(90deg,
+                    transparent calc(2 * var(--r-slide-width) - 70px),
+                    #abced4 calc(2 * var(--r-slide-width) - 70px),
+                    #abced4 calc(2 * var(--r-slide-width) - 67px),
+                    transparent calc(2 * var(--r-slide-width) - 67px)); */
+  background-size: 100% var(--r-line-height);
+  background-position: 0px calc(2 * var(--r-slide-height));
+  z-index: -1;
+}
+
+.compact .backgrounds {
+  background: initial;
+}
+
+/* colors */
+/* ====== */
+.reveal .slides {
+  color: var(--r-base-color);
+}
+
+.reveal .controls {
+  color: var(--r-link-color);
+}
+
+.reveal .progress {
+  background: var(--r-shadow-color);
+  color: var(--r-link-color);
+}
+
+.reveal ::selection {
+  color: var(--r-selection-color);
+  background: var(--r-selection-background-color);
+  text-shadow: none;
+}
+
+.reveal ::-moz-selection {
+  color: var(--r-selection-color);
+  background: var(--r-selection-background-color);
+  text-shadow: none;
+}
+
+.reveal .c1 {color: var(--r-palette-color1);}
+.reveal .c2 {color: var(--r-palette-color2);}
+.reveal .c3 {color: var(--r-palette-color3);}
+.reveal .c4 {color: var(--r-palette-color4);}
+.reveal .c5 {color: var(--r-palette-color5);}
+.reveal .c6 {color: var(--r-palette-color6);}
+.reveal .c7 {color: var(--r-palette-color7);}
+.reveal .c8 {color: var(--r-palette-color8);}
+.reveal .c9 {color: var(--r-palette-color9);}
+.reveal .c10 {color: var(--r-palette-color10);}
+
+.reveal .c1m {color: var(--r-palette-color1-medium);}
+.reveal .c2m {color: var(--r-palette-color2-medium);}
+.reveal .c3m {color: var(--r-palette-color3-medium);}
+.reveal .c4m {color: var(--r-palette-color4-medium);}
+.reveal .c5m {color: var(--r-palette-color5-medium);}
+.reveal .c6m {color: var(--r-palette-color6-medium);}
+.reveal .c7m {color: var(--r-palette-color7-medium);}
+.reveal .c8m {color: var(--r-palette-color8-medium);}
+.reveal .c9m {color: var(--r-palette-color9-medium);}
+.reveal .c10m {color: var(--r-palette-color10-medium);}
+
+.reveal .c1l {color: var(--r-palette-color1-light);}
+.reveal .c2l {color: var(--r-palette-color2-light);}
+.reveal .c3l {color: var(--r-palette-color3-light);}
+.reveal .c4l {color: var(--r-palette-color4-light);}
+.reveal .c5l {color: var(--r-palette-color5-light);}
+.reveal .c6l {color: var(--r-palette-color6-light);}
+.reveal .c7l {color: var(--r-palette-color7-light);}
+.reveal .c8l {color: var(--r-palette-color8-light);}
+.reveal .c9l {color: var(--r-palette-color9-light);}
+.reveal .c10l {color: var(--r-palette-color10-light);}
+
+/* styles */
+/* ====== */
+.reveal p {
+  transform: translateY(var(--r-base-offset));
+}
+
+.reveal ol,
+.reveal dl,
+.reveal ul {
+  display: inline-block;
+  text-align: left;
+  margin: 0 0 0 1em;
+  transform: translateY(var(--r-base-offset));
+}
+
+.reveal h1 {
+  font-family: var(--r-heading1-font);
+  font-size: var(--r-heading1-size);
+  line-height: var(--r-heading1-height);
+  transform: translateY(var(--r-heading1-offset));
+  font-weight: var(--r-heading1-weight);
+  color: var(--r-heading1-color);
+  text-shadow: var(--r-heading1-shadow);
+  text-decoration: var(--r-heading1-decoration);
+  filter: var(--r-heading1-filter);
+}
+
+.reveal h2 {
+  font-family: var(--r-heading2-font);
+  font-size: var(--r-heading2-size);
+  line-height: var(--r-heading2-height);
+  transform: translateY(var(--r-heading2-offset));
+  font-weight: var(--r-heading2-weight);
+  color: var(--r-heading2-color);
+  text-shadow: var(--r-heading2-shadow);
+  text-decoration: var(--r-heading2-decoration);
+  filter: var(--r-heading2-filter);
+}
+
+.reveal h3 {
+  font-family: var(--r-heading3-font);
+  font-size: var(--r-heading3-size);
+  line-height: var(--r-heading3-height);
+  transform: translateY(var(--r-heading3-offset));
+  font-weight: var(--r-heading3-weight);
+  color: var(--r-heading3-color);
+  text-shadow: var(--r-heading3-shadow);
+  text-decoration: var(--r-heading3-decoration);
+  filter: var(--r-heading3-filter);
+}
+
+.reveal h4 {
+  font-family: var(--r-heading4-font);
+  font-size: var(--r-heading4-size);
+  line-height: var(--r-heading4-height);
+  transform: translateY(var(--r-heading4-offset));
+  font-weight: var(--r-heading4-weight);
+  color: var(--r-heading4-color);
+  text-shadow: var(--r-heading4-shadow);
+  text-decoration: var(--r-heading4-decoration);
+  filter: var(--r-heading4-filter);
+}
+
+body.compact .reveal .slides,
+body.compact .reveal h1,
+body.compact .reveal h2,
+body.compact .reveal h3,
+body.compact .reveal h4,
+body.compact .reveal h5 {
+  color: initial;
+}
+
+.reveal em {
+  font-family: var(--r-fancy-font);
+  font-size: var(--r-fancy-size);
+  line-height: var(--r-fancy-height);
+  transform: translateY(var(--r-fancy-offset));
+  font-weight: var(--r-fancy-weight);
+  color: var(--r-fancy-color);
+  text-shadow: var(--r-fancy-shadow);
+  text-decoration: var(--r-fancy-decoration);
+}
+
+.reveal strong,
+.reveal .highlight {
+  color: var(--r-highlight-color);
+}
+
+.compact .reveal strong,
+.compact .reveal .highlight {
+  color: var(--r-highlight-color-compact);
+  font-style: italic;
+}
+
+.reveal .large {
+  font-size: 1.5em;
+}
+
+.reveal .xlarge {
+  font-size: 2em;
+}
+
+.reveal .arrow {
+  font-family: 'Balsamiq Sans', 'Patrick Hand', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* Other blocks */
+/* ============ */
+.reveal .h-full,
+.reveal .full {
+  left: 0;
+  width: 100%;
+}
+
+.reveal .v-full,
+.reveal .full {
+  top: 0;
+  height: 100%;
+}
+
+.reveal .h-centered,
+.reveal .v-centered,
+.reveal .centered {
+  display: flex;
+  flex-direction: column;
+}
+
+.reveal .h-centered,
+.reveal .centered {
+  text-align: center;
+  align-items: center;
+}
+
+.reveal .h-right {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.reveal .v-centered,
+.reveal .centered {
+  justify-content: center;
+}
+
+.reveal .lh1 {height: var(--lh1);}
+.reveal .lh2 {height: var(--lh2);}
+.reveal .lh3 {height: var(--lh3);}
+.reveal .lh4 {height: var(--lh4);}
+.reveal .lh5 {height: var(--lh5);}
+.reveal .lh6 {height: var(--lh6);}
+.reveal .lh7 {height: var(--lh7);}
+.reveal .lh8 {height: var(--lh8);}
+.reveal .lh9 {height: var(--lh9);}
+.reveal .lh10 {height: var(--lh10);}
+.reveal .lh11 {height: var(--lh11);}
+.reveal .lh12 {height: var(--lh12);}
+
+.reveal .ref {
+  position: relative;
+}
+
+.reveal .grid {
+  display:grid;
+  grid-auto-columns: 1fr;
+}
+
+.reveal .row1 {grid-row: 1;}
+.reveal .row2 {grid-row: 2;}
+.reveal .row3 {grid-row: 3;}
+.reveal .row4 {grid-row: 4;}
+.reveal .row5 {grid-row: 5;}
+
+.reveal .col1 {grid-column: 1;}
+.reveal .col2 {grid-column: 2;}
+.reveal .col3 {grid-column: 3;}
+.reveal .col4 {grid-column: 4;}
+.reveal .col5 {grid-column: 5;}
+
+.reveal .float {
+  display:block;
+  position:absolute;
+  top: 0;
+  left: 0;
+}
+
+.reveal .bordered {
+  border: 4px #cccc dashed;
+  margin: -4px;
+}
+.reveal .shadow {
+  filter: drop-shadow(5px 5px 5px var(--r-shadow-color));
+}
+
+.reveal .blur-bg {
+  backdrop-filter: blur(4px);
+  z-index: -50;
+}
+
+.reveal .once.fragment:not(.current-fragment) {
+  display: none;
+}
+
+/* Images */
+/* ====== */
+.reveal img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.reveal img:not(.uncentered) {
+  display: block;
+  margin: auto;
+}
+
+.reveal img.frame {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 10px 10px 15px var(--r-shadow-color);
+}
+
+/* MathJax */
+/* ======= */
+.reveal mjx-container > mjx-math{
+  margin-left: 10px;
+  margin-bottom: -0.2em;
+}
+
+.reveal mjx-container[display="true"] {
+  margin: .0em 0 !important;
+}
+
+
+/*********************************************
+ * OTHER
+ *********************************************/
+/* Ensure certain elements are never larger than the slide itself */
+/* .reveal video,
+.reveal iframe {
+  max-width: 95%;
+  max-height: 95%;
+}
+
+
+.reveal strong,
+.reveal b {
+  font-weight: bold;
+}
+
+
+
+.reveal ol {
+  list-style-type: decimal;
+}
+
+.reveal ul {
+  list-style-type: disc;
+}
+
+.reveal ul ul {
+  list-style-type: square;
+}
+
+.reveal ul ul ul {
+  list-style-type: circle;
+}
+
+.reveal ul ul,
+.reveal ul ol,
+.reveal ol ol,
+.reveal ol ul {
+  display: block;
+  margin-left: 40px;
+}
+
+.reveal dt {
+  font-weight: bold;
+}
+
+.reveal dd {
+  margin-left: 40px;
+}
+
+.reveal blockquote {
+  display: block;
+  position: relative;
+  width: 70%;
+  margin: var(--r-block-margin) auto;
+  padding: 5px;
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+}
+
+.reveal blockquote p:first-child,
+.reveal blockquote p:last-child {
+  display: inline-block;
+}
+
+.reveal q {
+  font-style: italic;
+}
+
+.reveal pre {
+  display: block;
+  position: relative;
+  width: 90%;
+  margin: var(--r-block-margin) auto;
+  text-align: left;
+  font-size: 0.55em;
+  font-family: var(--r-code-font);
+  line-height: 1.2em;
+  word-wrap: break-word;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.reveal code {
+  font-family: var(--r-code-font);
+  text-transform: none;
+  tab-size: 2;
+}
+
+.reveal pre code {
+  display: block;
+  padding: 5px;
+  overflow: auto;
+  max-height: 400px;
+  word-wrap: normal;
+}
+
+.reveal .code-wrapper {
+  white-space: normal;
+}
+
+.reveal .code-wrapper code {
+  white-space: pre;
+}
+
+.reveal table {
+  margin: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.reveal table th {
+  font-weight: bold;
+}
+
+.reveal table th,
+.reveal table td {
+  text-align: left;
+  padding: 0.2em 0.5em 0.2em 0.5em;
+  border-bottom: 1px solid;
+}
+
+.reveal table th[align=center],
+.reveal table td[align=center] {
+  text-align: center;
+}
+
+.reveal table th[align=right],
+.reveal table td[align=right] {
+  text-align: right;
+}
+
+.reveal table tbody tr:last-child th,
+.reveal table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.reveal sup {
+  vertical-align: super;
+  font-size: smaller;
+}
+
+.reveal sub {
+  vertical-align: sub;
+  font-size: smaller;
+}
+
+.reveal small {
+  display: inline-block;
+  font-size: 0.6em;
+  line-height: 1.2em;
+  vertical-align: top;
+}
+
+.reveal small * {
+  vertical-align: top;
+} */
+
+/*********************************************
+ * LINKS
+ *********************************************/
+/* .reveal a {
+  color: var(--r-link-color);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.reveal a:hover {
+  color: var(--r-link-color-hover);
+  text-shadow: none;
+  border: none;
+}
+
+.reveal .roll span:after {
+  color: #fff;
+  background: var(--r-link-color-dark);
+} */
+
+/*********************************************
+ * Frame helper
+ *********************************************/
+/* .reveal .r-frame {
+  border: 4px solid var(--r-main-color);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.reveal a .r-frame {
+  transition: all 0.15s linear;
+}
+
+.reveal a:hover .r-frame {
+  border-color: var(--r-link-color);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
+} */
+
+/*********************************************
+ * Printing
+ *********************************************/

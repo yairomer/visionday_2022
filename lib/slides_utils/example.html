@@ -1,0 +1,300 @@
+<!doctype html>
+<html>
+<head>
+  <title>Slides</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Font-awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- marked.js -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- mathjax -->
+  <script src="mathjax-config.js" async></script>
+  <!-- reveal -->
+  <link rel="stylesheet" href="reveal/reset.css">
+  <link rel="stylesheet" href="reveal/reveal.css">
+  <script src="reveal/reveal.js"></script>
+  <!-- reveal-plugins -->
+  <script src="reveal/plugin/notes/notes.js"></script>
+  <!-- slides utils -->
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" async></script>
+</head>
+<body>
+<div class="reveal"><div id="content" class="slides">
+
+<!-- ==================================================================================================== -->
+
+<section class="no-lines"><div class="full centered">
+
+# Example
+
+</div></section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Colors
+
+<br/>
+
+Basic:
+
+<p>
+<sapn class="c1">1</sapn>,
+<sapn class="c2">2</sapn>,
+<sapn class="c3">3</sapn>,
+<sapn class="c4">4</sapn>,
+<sapn class="c5">5</sapn>,
+<sapn class="c6">6</sapn>,
+<sapn class="c7">7</sapn>,
+<sapn class="c8">8</sapn>,
+<sapn class="c8">9</sapn>,
+<sapn class="c10">10</sapn>,
+</p><br/>
+
+Medium:
+
+<p>
+<sapn class="c1m">1</sapn>,
+<sapn class="c2m">2</sapn>,
+<sapn class="c3m">3</sapn>,
+<sapn class="c4m">4</sapn>,
+<sapn class="c5m">5</sapn>,
+<sapn class="c6m">6</sapn>,
+<sapn class="c7m">7</sapn>,
+<sapn class="c8m">8</sapn>,
+<sapn class="c8m">9</sapn>,
+<sapn class="c10m">10</sapn>,
+</p><br/>
+
+Light:
+
+<p>
+<sapn class="c1l">1</sapn>,
+<sapn class="c2l">2</sapn>,
+<sapn class="c3l">3</sapn>,
+<sapn class="c4l">4</sapn>,
+<sapn class="c5l">5</sapn>,
+<sapn class="c6l">6</sapn>,
+<sapn class="c7l">7</sapn>,
+<sapn class="c8l">8</sapn>,
+<sapn class="c8l">9</sapn>,
+<sapn class="c10l">10</sapn>,
+</p>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Styles
+
+# Heading 1
+
+<br/>
+
+## Heading 2
+
+<br/>
+
+### Heading 3
+
+<br/>
+
+#### Heading 4
+
+<br/>
+
+Normal, *Emphasis*, **Strong**, <span class="bordered">Bordered</span>, <span class="shadow">Shadow</span>
+
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Height and centering
+
+<br/>
+
+2 lines height div-s:<br/><br/>
+
+<div class="lh2 h-centered bordered">
+
+h-centered
+
+</div><br/>
+<div class="lh2 v-centered bordered">
+
+v-centered
+
+</div><br/>
+<div class="lh2 centered bordered">
+
+centered
+
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Grid
+
+<br/>
+<div class="grid">
+<div class="row1 col2 lh3 centered bordered">
+
+  First -> row1-col2
+
+</div>
+<div class="row3 col1 lh3 centered bordered">
+
+  Second -> row3-col1
+
+</div>
+<div class="row2 col3 lh3 centered bordered">
+
+  Third -> row2-col3
+
+</div>
+</div>
+
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Float
+
+<div class="float" style="top:60%;left:30%;transform:rotate(30deg)">
+
+Float 1
+
+</div>
+<div class="float" style="top:40%;left:70%;transform:rotate(-45deg)">
+
+Float 2
+
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Blur background
+
+<br/>
+<div class="h-centered">
+<div class="blur-bg lh3 bordered centered" style="width:50%">
+
+This div blurs it's background
+
+</div>
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Image
+
+<br/>
+
+Plain:<br/><br/>
+
+<img class="lh2" src="./media/celeba.png" class="frame"/><br/>
+
+With rounded corners and shadow:<br/><br/>
+
+<img class="lh2 frame" src="./media/celeba.png" class="frame"/>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Math
+
+Symbols:
+&nbsp;&nbsp;&nbsp;
+$\N$,
+$\R$,
+$\D$,
+$\bigO$,
+$\E$,
+$\data$,
+$\eps$<br/><br/>
+
+Vectors, Matrices, random variables & random vectors:
+
+$\vec{x}$,
+$\mat{A}$,
+$\rand{n}$,
+$\randvec{n}$<br/><br/>
+
+Brackets
+
+$\pth{1+2}$,
+$\bpth{1+2}$,
+$\braces{1+2}$,
+$\abs{1+2}$,
+$\ceil{1+2}$,
+$\floor{1+2}$,
+$\norm{1+2}$<br/><br/>
+
+Functions
+
+<div class="double-line">
+
+$\expected{x}$,
+$\argmax{x}$,
+$\argmin{x}$,
+$\indicator{x}$,
+$\softmax{x}$,
+$\logsoftmax{x}$
+
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Fragments
+
+<p class="fragment">Fade in</p>
+<p class="fragment fade-out">Fade out</p>
+<p class="fragment highlight-red">Highlight red</p>
+<p class="fragment fade-in-then-out">Fade in, then out</p>
+<p class="fragment fade-up">Slide up while fading in</p>
+
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### arrows
+
+<div class="arrow c1" style="top:50%;left:50%;">
+
+→➤➜➱➨➽➙➫
+
+</div>
+
+</section>
+
+</div></div>
+</body>
+</html>

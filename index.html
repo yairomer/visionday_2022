@@ -1,0 +1,802 @@
+<!doctype html>
+<html>
+<head>
+  <title>Slides</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Font-awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- marked.js -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- mathjax -->
+  <script src="lib/slides_utils/mathjax-config.js" async></script>
+  <!-- reveal -->
+  <link rel="stylesheet" href="lib/slides_utils/reveal/reset.css">
+  <link rel="stylesheet" href="lib/slides_utils/reveal/reveal.css">
+  <script src="lib/slides_utils/reveal/reveal.js"></script>
+  <!-- reveal-plugins -->
+  <script src="lib/slides_utils/reveal/plugin/notes/notes.js"></script>
+  <!-- slides utils -->
+  <link rel="stylesheet" href="lib/slides_utils/style.css">
+  <script src="lib/slides_utils/main.js"></script>
+  <script>
+    revealConfig['transition'] = 'none';
+  </script>
+</head>
+<body>
+<div class="reveal"><div id="content" class="slides">
+
+<!-- ==================================================================================================== -->
+
+<section class="no-lines"><div class="h-centered">
+
+# Contrastive Divergence Learning is a Time Reversal Adversarial Game
+
+<br/>
+
+*By Omer Yair & Tomer Michaeli* 
+
+<br/>
+<br/>
+
+[ICLR 2021]
+
+<img class="float lh2 shadow" style="left:5%;top:var(--lh9);" src="lib/slides_utils/media/TechnionLogo.svg">
+<img class="float lh5 frame" style="left:65%;top:var(--lh7);" src="media/chess.jpg">
+
+</div></section>
+
+<!-- ==================================================================================================== -->
+
+<section class="no-lines"><div class="full centered">
+
+## 2 Minute Intro to<br>**E**nergy-**B**ased-**M**odels
+
+</div></section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### The problem
+
+<br/>
+
+Learning the distribution of samples in a given dataset:
+
+<br/>
+<div class="h-centered ref">
+  <img class="shadow lh8" src="output/samples.png">
+  <div class="float c1" style="left:11%;top:var(--lh5);">
+
+   *Dataset samples*
+
+   <div float class="arrow large float" style="transform: translate(460px,10px) rotate(-20deg);">➙</div>
+  </div>
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Explicit vs. Implicit Generative Models
+
+<br/>
+<div class="grid" style="column-gap: 200px;">
+<div class="col1 fragment fade-up" data-fragment-index="10">
+  <div class="h-centered">
+
+  #### Implicit
+
+  </div>
+
+  Generating samples w/o <br/> learning $p(x)$.
+
+  <br/>
+  <div class="fragment fade-up" data-fragment-index="11">
+
+  E.g.
+
+  - GANs.
+  - VAEs.
+  - Diffusion models.
+
+  </div>
+</div>
+<div class="col2 fragment fade-up" data-fragment-index="20">
+  <div class="h-centered">
+
+  #### Explicit
+
+  </div>
+
+  Explicity learning $p(x)$.
+
+  <br/>
+  <div class="fragment fade-up" data-fragment-index="21">
+
+  E.g.
+
+  - Auto regressive.
+  - Invertible Normalizing Flows (e.g. GLOW)
+  - Score based methods.
+  - **Energy based models**.
+
+  </div>
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Fitting a Probability Model
+
+<br/>
+<div class=h-centered>
+
+We would like to learn a parametric model:
+
+</div>
+<br/>
+<div class="h-centered ref">
+  <div class="r-stack">
+    <img class="fragment fade-out lh8 shadow" data-fragment-index="1" src="output/samples_and_model.png">
+    <img class="fragment fade-in lh8 shadow" data-fragment-index="1" src="output/train.png">
+  </div>
+  <div class="float c1" style="left:11%;top:var(--lh5);">
+
+   *Dataset samples* 
+
+   <div float class="arrow large float" style="transform: translate(460px,10px) rotate(-20deg);">➙</div>
+  </div>
+  <div class="float c4" style="left:65%;top:0;">
+
+   *Some parametric model<br>$p(x;\theta)$*
+
+   <div float class="arrow large float" style="transform: translate(0px,85px) rotate(160deg);">➙</div>
+  </div>
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Energy Based Model
+
+<br>
+
+The Boltzmann-Gibbs distribution:
+
+<div class="lh3 centered">
+  <div class="ref blur-bg" style="width:fit-content;height:fit-content;">
+
+   $$
+   p(x;\theta)=\frac{e^{-E(x;\theta)}}{Z}
+   $$
+
+   <div class="fragment fade-left float" data-fragment-index="1" style="font-size:1.5em;left:80%;top:55%;">
+
+   **?**
+
+   </div>
+      <div class="fragment fade-up float full" data-fragment-index="2" style="color:var(--r-highlight-color);">
+        <svg style="width:100%;height:100%;">
+          <line x1="0%" x2="100%" y1="100%" y2="0%" stroke="currentColor" stroke-width="5"/>
+        </svg>
+      </div>
+  </div>
+</div>
+
+<br>
+
+<div class="fragment fade-up" data-fragment-index="2">
+
+The un-normalzed distribution:
+
+<br/>
+
+$$
+p(x;\theta)\propto e^{-E(x;\theta)}
+$$
+
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Approximated Maximum likelihood
+
+Gradient step:
+
+<div class="lh2 centered">
+
+$$
+\theta^{(t+1)}
+= \theta^{(t)}
++\eta \expected{ \nabla_{\theta}{\color{color3}E(\tilde{x};\theta)}
+                -\nabla_{\theta}{\color{color1}E(x;\theta)}}
+$$
+
+</div>
+<div class="h-centered ref">
+  <div class="r-stack">
+    <img class="fragment fade-out lh8 shadow" data-fragment-index="1" src="output/samples_and_model.png">
+    <img class="fragment fade-in lh8 shadow" data-fragment-index="1" src="output/contrastive_samples.png">
+  </div>
+  <div class="float c1" style="left:11%;top:var(--lh5);">
+
+   *Dataset samples<br/>$x$* 
+   
+   <div float class="arrow large float" style="transform: translate(460px,10px) rotate(-20deg);">➙</div>
+  </div>
+  <div class="float c4" style="left:70%;top:var(--lh6);">
+
+   The model:
+
+   *$p(x;\theta)\propto e^{-E(x;\theta)}$*
+
+  </div>
+  <div class="fragment fade-up float c3" data-fragment-index="1" style="left:70%;top:var(--lh2);">
+
+   *Samples from<br/>the model $\tilde{x}$*
+
+   <div float class="arrow large float" style="transform: translate(-100px,10px) rotate(190deg);">➙</div>
+  </div>
+</div>
+
+<div class="fragment fade-up float c3 large arrow" data-fragment-index="2" style="left:53%;top:30%;transform:rotate(-90deg);">➱</div>
+<div class="fragment fade-down float c1 large arrow" data-fragment-index="3" style="left:73%;top:30%;transform:rotate(90deg);">➱</div>
+
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Generating Samples Using MCMC
+
+<br/>
+<br/>
+<br/>
+<div class="h-centered ref">
+  <img class="lh8 shadow" src="output/mcmc.png">
+  <div class="float c1" style="left:11%;top:var(--lh5);">
+
+   *Dataset samples<br/>$x$*
+
+   <div float class="arrow large float" style="transform: translate(460px,10px) rotate(-20deg);">➙</div>
+  </div>
+  <div class="fragment fade-in float c3" data-fragment-index="1" style="left:62%;top:var(--lh3);">
+
+   *Requires many steps*
+
+   <div float class="arrow large float" style="transform: translate(-100px,10px) rotate(190deg);">➙</div>
+  </div>
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Contrastive Divergence
+
+<br/>
+<br/>
+<br/>
+<div class="h-centered ref">
+  <img class="lh8 shadow" src="output/cd.png">
+  <div class="float c1" style="left:11%;top:var(--lh5);">
+
+   *Dataset samples<br/>$x$*
+
+   <div float class="arrow large float" style="transform: translate(460px,10px) rotate(-20deg);">➙</div>
+  </div>
+  <div class="fragment fade-in float c2" data-fragment-index="1" style="left:60%;top:var(--lh4);">
+
+   *Short MCMC*
+
+   <div float class="arrow large float" style="transform: translate(-90px,50px) rotate(170deg);">➙</div>
+  </div>
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Contrastive Divergence
+
+Gradient step:
+
+<div class="lh2 centered">
+
+$$
+\theta^{(t+1)}
+= \theta^{(t)}
++\eta \expected{ \nabla_{\theta}{\color{color2}E(\tilde{x};\theta)}
+                -\nabla_{\theta}{\color{color1}E(x;\theta)}}
+$$
+
+<div class="float c2 large arrow" data-fragment-index="2" style="left:53%;top:30%;transform:rotate(-90deg);">➱</div>
+<div class="float c1 large arrow" data-fragment-index="3" style="left:73%;top:30%;transform:rotate(90deg);">➱</div>
+
+</div>
+<div class="h-centered ref">
+  <img class="lh8 shadow" src="output/cd_samples.png">
+  <div class="float c1" style="left:11%;top:var(--lh5);">
+
+   *Dataset samples<br/>$x$*
+
+   <div float class="arrow large float" style="transform: translate(460px,10px) rotate(-20deg);">➙</div>
+  </div>
+  <div class="float c2" style="left:60%;top:var(--lh4);">
+
+   *Contrastive samples<br>$\tilde{x}$*
+
+   <div float class="arrow large float" style="transform: translate(-90px,40px) rotate(170deg);">➙</div>
+  </div>
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### CD - Original Derivation
+
+<div class="float full" data-fragment-index="1" style="left:70%;">
+
+  [Hinton 2002]
+
+</div>
+
+The suggested objective:
+
+<div class="lh2 centered">
+
+$$
+L(\theta)=
+   {\color{color5}\KL{p_{\text{data}}}{p_{\text{model}}}}
+  -{\color{color6}\KL{p_{\text{CD}}}{p_{\text{model}}}}
+$$
+
+</div>
+<div class="h-centered ref">
+  <img class="lh8 shadow" src="output/all_samples.png">
+  <div class="float c1" style="left:11%;top:var(--lh5);">
+
+   *Dataset samples<br/>$x$*
+
+   <div float class="arrow large float" style="transform: translate(460px,10px) rotate(-20deg);">➙</div>
+  </div>
+  <div class="float c2" data-fragment-index="1" style="left:60%;top:var(--lh4);">
+
+   *Contrastive samples<br>$\tilde{x}$*
+
+   <div float class="arrow large float" style="transform: translate(-90px,40px) rotate(170deg);">➙</div>
+  </div>
+  <div class="float c3" style="left:70%;top:var(--lh2);">
+
+   *Samples from<br/>the model $\tilde{x}$*
+
+   <div float class="arrow large float" style="transform: translate(-100px,10px) rotate(190deg);">➙</div>
+  </div>
+  <img class="lh2 shadow float" src="media/direction_c5.drawio.svg" style="top:24%;left:47%;transform: rotate(55deg) scale(1.7);">
+  <img class="lh2 shadow float" src="media/direction_c6.drawio.svg" style="top:35%;left:55%;transform: rotate(35deg) scaleY(-1) scale(-1.3);">
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### CD - Derivative
+
+<div class="float" style="left:70%;top:0;">
+
+  [Hinton 2002]
+
+</div>
+<br>
+
+Gradient step:
+
+<div class="lh3 centered ref" style="font-size:0.8em">
+
+$$
+\nabla_{\theta}L(\theta)
+= \expected{\nabla_{\theta}{\color{color2}E(\tilde{x};\theta)}
+            -\nabla_{\theta}{\color{color1}E(x;\theta)}}
+  +\frac{\partial D_{\text{KL}}(p_{\text{CD}}||p_{\text{Model}})}{\partial p_{\text{CD}}}\nabla_{\boldsymbol{\theta}}p_{\text{CD}}
+$$
+
+  <div class="fragment fade-left float 1lh"
+     style="font-size:1.5em;left:58%;width:37%;top:33%;color:var(--r-highlight-color)">
+    <svg style="width:100%;height:100%;">
+      <line x1="0%" x2="100%" y1="100%" y2="0%" stroke="currentColor" stroke-width="15"/>
+    </svg>
+  </div>
+
+</div>
+<div class="float h-centered" style="top:var(--3lh);left:60%;">
+  <div class="fragment fade-up highlight" style="font-size: 2em;">?</div>
+  <div class="fragment fade-up highlight" style="font-size: 0.6em;line-height:1.1em;">
+
+    Tielman, 2007
+    Sutskever and Tieleman, 2007
+    Hyvarinen 2007
+    Sohl-Dickstein 2011
+    Qiu et al. 2019
+    Du et al. 2020
+    ...
+
+  </div>
+
+</div>
+
+<div class="h-centered ref" style="transform: scale(0.6) translate(-30%, -10%);">
+  <img class="lh8 shadow" src="output/cd_samples.png">
+  <div class="float c1" style="left:11%;top:var(--lh5);">
+
+   *Dataset samples<br/>$x$*
+
+   <div float class="arrow large float" style="transform: translate(460px,10px) rotate(-20deg);">➙</div>
+  </div>
+  <div class="float c2" data-fragment-index="1" style="left:60%;top:var(--lh4);">
+
+   *Contrastive samples<br>$\tilde{x}$*
+
+   <div float class="arrow large float" style="transform: translate(-90px,40px) rotate(170deg);">➙</div>
+  </div>
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section class="no-lines">
+<div class="full centered">
+
+## An Alternative Derivation
+
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Focusing on a single chain
+
+<br/>
+<br/>
+<div class="h-centered ref">
+  <img class="lh9 shadow" src="output/single_cd.png">
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Focusing on a single chain
+
+<div class="grid">
+<div class="col1 h-centered">
+  <br/>
+
+  Original Chain
+
+  <div class="h-full h-centered ref">
+    <img class="lh8 shadow" src="output/single_cd_zoom.png">
+    <img class="lh2 shadow float" src="media/direction.drawio.svg" style="top:30%;left:30%;">
+  </div>
+</div>
+<div class="fragment fade-right col2" data-fragment-index="1">
+  <br/>
+  <div class="h-full lh8 ref">
+    <img class="float lh3 shadow" src="media/coin_toss.png" style="top:30%;left:40%;">
+    <div float class="arrow xlarge float" style="top:55%;left:5%;transform: rotate(0deg);">➜</div>
+    <div float class="arrow xlarge float" style="top:35%;left:75%;transform: rotate(-30deg);">➜</div>
+    <div float class="arrow xlarge float" style="top:65%;left:75%;transform: rotate(30deg);">➜</div>
+  </div>
+</div>
+<div class="fragment fade-right col3 h-centered" data-fragment-index="1">
+
+  Original
+
+  <div class="h-centered ref" style="width:50%">
+    <img class="lh4 shadow" src="output/single_cd_original.png">
+    <img class="lh1 shadow float" src="media/direction.drawio.svg" style="top:30%;left:30%;">
+  </div>
+
+  Reversed
+
+  <div class="h-centered ref" style="width:50%">
+    <img class="lh4 shadow" src="output/single_cd_revesed_zoom.png">
+    <img class="lh1 shadow float" src="media/direction.drawio.svg" style="top:30%;left:30%;transform: scaleY(-1);">
+  </div>
+
+</div>
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Classifying the Correct Direction
+
+<div class="grid">
+<div class="col1 h-centered">
+  <br>
+
+  Unknown direction
+
+  <div class="h-full h-centered ref">
+    <img class="lh8 shadow" src="output/single_cd_clean.png">
+    <img class="lh2 shadow float" src="media/direction.drawio.svg" style="top:30%;left:16%;">
+    <img class="lh2 shadow float" src="media/direction.drawio.svg" style="top:30%;left:34%;transform: rotate(180deg);">
+    <div class="float c2" style="font-size:2em;top:38%;left:20%;">?</div>
+  </div>
+</div>
+<div class="col2 h-centered">
+  <br/>
+  <div class="h-full lh8 ref">
+   <img class="float lh2 shadow" src="media/discriminator.drawio.svg" style="top:45%;left:25%;">
+   <div float class="arrow xlarge float" style="top:55%;left:0%;transform: rotate(0deg);">➜</div>
+   <div float class="arrow xlarge float" style="top:35%;left:75%;transform: rotate(-30deg);">➜</div>
+   <div float class="arrow xlarge float" style="top:65%;left:75%;transform: rotate(30deg);">➜</div>
+   <div class="float fragment fade-up c4" style="top:72%;left:20%;">
+   <span class="arrow xlarge" style="display:inline-block;transform: rotate(-90deg);">→</span>
+
+   The model:
+
+   *$p(x;\theta)\propto e^{-E(x;\theta)}$*
+   </div>
+  </div>
+</div>
+<div class="col3 h-centered">
+
+  Original
+
+  <div class="h-centered ref" style="width:50%">
+    <img class="lh4 shadow" src="output/single_cd_original.png">
+    <img class="lh1 shadow float" src="media/direction.drawio.svg" style="top:30%;left:30%;">
+  </div>
+
+  Reversed
+
+  <div class="h-centered ref" style="width:50%">
+    <img class="lh4 shadow" src="output/single_cd_revesed_zoom.png">
+    <img class="lh1 shadow float" src="media/direction.drawio.svg" style="top:30%;left:30%;transform: scaleY(-1);">
+  </div>
+</div>
+</div>
+
+<div class="float" style="top:90%;left:5%;width:55%;font-size:0.6em;">
+
+*A generalization of CNCE [Ceylan & Gutmann, 2018]
+
+</div>
+
+
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+## Chain Probability
+
+<div class="grid">
+<div class="col1 ref h-centered">
+
+  Original
+
+  <br>
+  <div class="h-full h-centered ref">
+    <img class="lh8 shadow" src="output/single_cd_original.png">
+    <img class="lh2 shadow float" src="media/direction.drawio.svg" style="top:30%;left:20%;">
+    <div style="font-size:0.6em">
+      <div class="float" style="top:85%;left:45%;">$p_{model}(x^{(0)};\theta)$</div>
+      <div class="float" style="top:60%;left:28%;">$p(x^{(1)}|x^{(0})$</div>
+      <div class="float" style="top:33%;left:27%;">$p(x^{(2)}|x^{(1})$</div>
+      <div class="float" style="top:22%;left:28%;">$p(x^{(3)}|x^{(2})$</div>
+      <div class="float" style="top:14%;left:52%;">$p(x^{(4)}|x^{(3})$</div>
+      <div class="float" style="top:5%;left:50%;">$p(x^{(5)}|x^{(4})$</div>
+    </div>
+  </div>
+</div>
+<div class="col2 ref h-centered">
+
+  Reversed
+
+  <br>
+  <div class="h-full h-centered ref">
+    <img class="lh8 shadow" src="output/single_cd_revesed_zoom.png">
+    <img class="lh2 shadow float" src="media/direction.drawio.svg" style="top:30%;left:20%;transform: scaleY(-1);">
+    <div style="font-size:0.6em">
+      <div class="float" style="top:-5%;left:25%;">$p_{model}(x^{(5)};\theta)$</div>
+      <div class="float" style="top:60%;left:28%;">$p(x^{(0)}|x^{(1})$</div>
+      <div class="float" style="top:33%;left:27%;">$p(x^{(1)}|x^{(2})$</div>
+      <div class="float" style="top:22%;left:28%;">$p(x^{(2)}|x^{(3})$</div>
+      <div class="float" style="top:14%;left:52%;">$p(x^{(3)}|x^{(4})$</div>
+      <div class="float" style="top:5%;left:50%;">$p(x^{(4)}|x^{(5})$</div>
+    </div>
+  </div>
+</div>
+</div>
+
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+## Chain Probability
+
+<div class="grid">
+<div class="col1 ref h-centered">
+
+  Original
+
+  <br>
+  <div class="h-full h-centered ref">
+    <div class="lh8" style="font-size:0.6em">
+      <div class="float" style="top:85%;left:45%;">$p_{model}(x^{(0)};\theta)$</div>
+    </div>
+    <div style="position:absolute;width:100%;opacity:40%;">
+      <img class="lh8 shadow" src="output/single_cd_original.png">
+      <img class="lh2 shadow float" src="media/direction.drawio.svg" style="top:30%;left:20%;">
+      <div style="font-size:0.6em">
+        <div class="float" style="top:60%;left:28%;">$p(x^{(1)}|x^{(0})$</div>
+        <div class="float" style="top:33%;left:27%;">$p(x^{(2)}|x^{(1})$</div>
+        <div class="float" style="top:22%;left:28%;">$p(x^{(3)}|x^{(2})$</div>
+        <div class="float" style="top:14%;left:52%;">$p(x^{(4)}|x^{(3})$</div>
+        <div class="float" style="top:5%;left:50%;">$p(x^{(5)}|x^{(4})$</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col2 ref h-centered">
+
+  Reversed
+
+  <br>
+  <div class="h-full h-centered ref">
+    <div class="lh8" style="font-size:0.6em">
+        <div class="float" style="top:-5%;left:25%;">$p_{model}(x^{(5)};\theta)$</div>
+    </div>
+    <div style="position:absolute;width:100%;opacity:40%;">
+      <img class="lh8 shadow" src="output/single_cd_revesed_zoom.png">
+      <img class="lh2 shadow float" src="media/direction.drawio.svg" style="top:30%;left:20%;transform: scaleY(-1);">
+      <div style="font-size:0.6em">
+        <div class="float" style="top:60%;left:28%;">$p(x^{(0)}|x^{(1})$</div>
+        <div class="float" style="top:33%;left:27%;">$p(x^{(1)}|x^{(2})$</div>
+        <div class="float" style="top:22%;left:28%;">$p(x^{(2)}|x^{(3})$</div>
+        <div class="float" style="top:14%;left:52%;">$p(x^{(3)}|x^{(4})$</div>
+        <div class="float" style="top:5%;left:50%;">$p(x^{(4)}|x^{(5})$</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### The Resulting Gradient Step
+
+<br>
+
+<div class="lh2 h-centered">
+
+$
+\nabla_{\theta}L(\theta) = \expected{
+\alpha\pth{{\left\lbrace x^{(k)}\right\rbrace_{k=0}^K}}
+\pth{
+ \nabla_{\theta}{\color{color2}E(\tilde{x};\theta)}
+-\nabla_{\theta}{\color{color1}E(x;\theta)}
+}}
+$
+
+</div>
+
+<div class="float" style="top:var(--lh4);left:15%;width:45%">
+  <div class="h-centered">
+   <span class="arrow xlarge" style="display:inline-block;transform: rotate(-110deg) translateX(-20%);">→</span>
+
+   Some factor which depends on the chain's transition kernel
+
+  </div>
+</div>
+
+<br/>
+<br/>
+<div class="h-right">
+  <img class="lh6 shadow uncentered" src="output/cd_static.png">
+</div>
+
+</section>
+
+<!-- Where:
+
+$
+\alpha\pth{{\left\lbrace x^{(k)}\right\rbrace_{k=0}^K}}
+\overset{\Delta}{=}
+\left(1+\frac
+{p(\mathbf{x}^{(0)}|\mathbf{x}^{(1)})\cdots p(\mathbf{x}^{(3)}|\mathbf{x}^{(4)})p(\mathbf{x}^{(5)};\boldsymbol{\theta})}
+{p(\mathbf{x}^{(0)}|\mathbf{x}^{(1)})\cdots p(\mathbf{x}^{(1)}|\mathbf{x}^{(0)})p(\mathbf{x}^{(0)};\boldsymbol{\theta})}
+\right)^{-1}
+$ -->
+
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+### Contrastive Divergence as A Special Case
+
+<br>
+
+For MCMC which obey detailed balance $\alpha=\frac{1}{2}$.
+
+In such cased the gradient becomes:
+
+<div class="lh2 centered">
+
+$
+\nabla_{\theta}L(\theta)
+= \frac{1}{2}\expected{\nabla_{\theta}{\color{color2}E(\tilde{x};\theta)}
+            -\nabla_{\theta}{\color{color1}E(x;\theta)}}
+$
+
+</div>
+<div class="h-right">
+  <img class="lh6 shadow uncentered" src="output/cd_static.png">
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section>
+
+## The Adversarial Game
+
+<br/>
+<img class="lh8 shadow" src="media/adverserial.drawio.svg">
+
+
+
+</section>
+
+<!-- ==================================================================================================== -->
+
+<section class="no-lines">
+<div class="full centered" style="font-size: 1.1em;">
+
+  # Thanks! :)
+
+</div>
+</section>
+
+<!-- ==================================================================================================== -->
+
+
+</div></div>
+</body>
+</html>
